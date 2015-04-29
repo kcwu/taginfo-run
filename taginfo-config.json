@@ -4,19 +4,19 @@
     // You probably want to change all these.
     "instance": {
         // URL prefix for the site.
-        "url": "http://localhost:4567",
+        "url": "http://osm.kcwu.csie.org:4567",
         // Used in the title of all HTML pages.
-        "name": "OpenStreetMap Taginfo",
+        "name": "OpenStreetMap Taginfo for Taiwan",
         // Description of this taginfo instance. Will appear on the home page and about page.
-        "description": "This is a <b>taginfo test instance</b>. Change this text in your <tt>taginfo-config.json</tt>.",
+        "description": "This is a <b>taginfo test instance</b> for Taiwan.",
         // Additional description that will only appear on the about page.
-        "about": "<p>This site is maintained by XXX.</p><p>There isn't just one taginfo site, there are several. The main site is at <a class='extlink' href='http://taginfo.openstreetmap.org/'>taginfo.openstreetmap.org</a>, but several <a class='extlink' href='http://wiki.openstreetmap.org/wiki/Taginfo/Sites'>other taginfo sites</a> are operated by different people.</p>",
+        "about": "<p>This site is maintained by kcwu.</p><p>There isn't just one taginfo site, there are several. The main site is at <a class='extlink' href='http://taginfo.openstreetmap.org/'>taginfo.openstreetmap.org</a>, but several <a class='extlink' href='http://wiki.openstreetmap.org/wiki/Taginfo/Sites'>other taginfo sites</a> are operated by different people.</p>",
         // URL path to instance icon in the upper left.
         "icon": "/img/logo/test.png",
         // Contact name and email address.
-        "contact": "Anonymous",
+        "contact": "kcwu",
         // Geographical area this taginfo instance covers.
-        "area": "World",
+        "area": "Taiwan",
         // Add CORS header Access-Control-Allow-Origin with the given value
         // to all /api responses. Use "" to not set this header, disallowing
         // external services to use your API from a browser. Set to "*" to
@@ -25,15 +25,15 @@
     },
     // For the geodistribution map. See the wiki documentation about these settings.
     "geodistribution": {
-        "left": -180,
-        "bottom": -90,
-        "right": 180,
-        "top": 90,
-        "width": 360,
-        "height": 180,
+        "left": 119.31,
+        "bottom": 21.84,
+        "right": 122.07,
+        "top": 25.34,
+        "width": 276,
+        "height": 350,
         "scale_image": 2,
         "scale_compare_image" : 1,
-        "background_image": "/img/mapbg/world.png",
+        "background_image": "/img/mapbg/taiwan.png",
         // optional attribution for base image, will show up below all maps
         "image_attribution": ""
     },
@@ -51,7 +51,7 @@
         "max_auto": 100,
         "url_prefix": "http://overpass-turbo.eu/?",
         // set this to "global" or "in <area>" where <area> is a country name or other region found by Nominatim
-        "wizard_area": "global"
+        "wizard_area": "in taiwan"
     },
     // "Level0 Editor" button on key/tag pages
     "level0": {
@@ -62,8 +62,8 @@
     },
     "opensearch": {
         // For the OpenSearchDescription. You have to change at least the shortname and the contact for your instance.
-        "shortname": "Taginfo Test Instance",
-        "contact": "somebody@example.com",
+        "shortname": "Taginfo Taiwan Instance",
+        "contact": "kcwu@csie.org",
         "description": "Find metadata about OpenStreetMap tags",
         "tags": "osm openstreetmap tag tags taginfo"
     },
@@ -79,7 +79,8 @@
             // Path to the 'tagstats' program (absolute path or relative to sources/db directory).
             "tagstats": "../../tagstats/tagstats",
             // The OSM planet file or extract where we read the OSM data from.
-            "planetfile": "/osm/planet/var/current-planet.osm.pbf"
+            //"planetfile": "/osm/planet/var/current-planet.osm.pbf"
+            "planetfile": "/home/data/vhost/osm.kcwu.csie.org/taginfo/build/taiwan-latest.osm.pbf"
         },
         // If you change any of the following you have to run the update
         // twice for it to take effect.
@@ -87,31 +88,38 @@
             // Minimum number of occurances of a tag to make it
             // potentially "interesting", ie. create tag combination
             // statistics for it.
-            "min_count_tags": 10000,
+            "min_count_tags": 1,
             // Tag combinations not appearing this often are not written to database.
-            "min_tag_combination_count": 1000,
+            "min_tag_combination_count": 1,
             // Minimum number of tag occurances for creating a map
-            "min_count_for_map": 1000,
+            "min_count_for_map": 1,
             // Minimum number of relations per type to make this
             // relation type "interesting", ie. to make it show
             // up as a relation type.
-            "min_count_relations_per_type": 100
+            "min_count_relations_per_type": 1,
+            // Tokenizer for sqlite full-text search. Complex or custom
+            // tokenizers, e.g., icu and unicode61, may be more suitable for
+            // some locales. You may need newer sqlite3 or to recompile
+            // sqlite3 to use those tokenizers.
+            // See http://www.sqlite.org/fts3.html#tokenizer for detail.
+            "tokenizer": "icu"
         }
     },
     "logging": {
         // directory for log files
-        "directory": "/osm/taginfo/var/log",
+        "directory": "/home/data/vhost/osm.kcwu.csie.org/taginfo/log",
         // SQL queries longer than this many seconds are logged
         "min_duration": 0.1
     },
     // For compiling tagstats.
     "tagstats": {
         // Extra compilerflags, for instance to find Osmium.
-        "cxxflags": "-I../../../osmium/osmium/include",
+        "cxxflags": "-I/home/data/repos/git/osm/osmium/include -I/home/data/repos/git/osm/OSM-binary/include -I/usr/local/include -Wno-c++11-long-long -Wno-long-long -L/usr/local/lib -L/home/data/repos/git/osm/OSM-binary/src ",
         // Node location store. For really large OSM files (whole planet or large continent)
         // this should be "MmapAnon", otherwise "SparseTable".
         "geodistribution": "SparseTable",
         // C++ type used for geodistribution
-        "geodistribution_int": "uint16_t"
+        //"geodistribution_int": "uint16_t"
+        "geodistribution_int": "uint32_t"
     }
 }
