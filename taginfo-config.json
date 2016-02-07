@@ -8,11 +8,11 @@
         // Used in the title of all HTML pages.
         "name": "OpenStreetMap Taginfo for Taiwan",
         // Description of this taginfo instance. Will appear on the home page and about page.
-        "description": "This is a <b>taginfo test instance</b> for Taiwan.",
+        "description": "This is a <b>taginfo instance</b> for Taiwan.",
         // Additional description that will only appear on the about page.
         "about": "<p>This site is maintained by kcwu.</p><p>There isn't just one taginfo site, there are several. The main site is at <a class='extlink' href='http://taginfo.openstreetmap.org/'>taginfo.openstreetmap.org</a>, but several <a class='extlink' href='http://wiki.openstreetmap.org/wiki/Taginfo/Sites'>other taginfo sites</a> are operated by different people.</p>",
         // URL path to instance icon in the upper left.
-        "icon": "/img/logo/test.png",
+        "icon": "/img/logo/tw.png",
         // Contact name and email address.
         "contact": "kcwu",
         // Geographical area this taginfo instance covers.
@@ -68,7 +68,7 @@
         "tags": "osm openstreetmap tag tags taginfo"
     },
     "sources": {
-        // These sources will be downloaded from http://taginfo.openstreetmap.org/download/
+        // These sources will be downloaded from https://taginfo.openstreetmap.org/download/
         // Note that this will NOT work for the "db" source! Well, you can download it,
         // but it will fail later, because the database is changed by the master.sql
         // scripts.
@@ -76,11 +76,11 @@
         // These sources will be created from the actual sources.
         "create": "db",
         "db": {
-            // Path to the 'tagstats' program (absolute path or relative to sources/db directory).
-            "tagstats": "../../tagstats/tagstats",
+            // Path to binaries (like 'tagstats' and 'similarity').
+            "bindir": "../../tagstats",
             // The OSM planet file or extract where we read the OSM data from.
             //"planetfile": "/osm/planet/var/current-planet.osm.pbf"
-            "planetfile": "/home/data/vhost/osm.kcwu.csie.org/taginfo/build/taiwan-latest.osm.pbf"
+            "planetfile": "/taginfo-run/build/taiwan-latest.osm.pbf"
         },
         // If you change any of the following you have to run the update
         // twice for it to take effect.
@@ -105,19 +105,25 @@
             "tokenizer": "icu"
         }
     },
+    // Settings for the web user interface
+    "user_interface": {
+        "key_page": {
+            "show_tab_similar": true
+        }
+    },
     "logging": {
         // directory for log files
-        "directory": "/home/data/vhost/osm.kcwu.csie.org/taginfo/log",
+        "directory": "/taginfo/log",
         // SQL queries longer than this many seconds are logged
         "min_duration": 0.1
     },
     // For compiling tagstats.
     "tagstats": {
-        // Extra compilerflags, for instance to find Osmium.
-        "cxxflags": "-I/home/data/repos/git/osm/osmium/include -I/home/data/repos/git/osm/OSM-binary/include -I/usr/local/include -Wno-c++11-long-long -Wno-long-long -L/usr/local/lib -L/home/data/repos/git/osm/OSM-binary/src ",
+        // Extra compilerflags, for instance to find Libosmium.
+        "cxxflags": "-I../../libosmium/include -I/usr/local/include -Wno-c++11-long-long -Wno-long-long ",
         // Node location store. For really large OSM files (whole planet or large continent)
-        // this should be "MmapAnon", otherwise "SparseTable".
-        "geodistribution": "SparseTable",
+        // this should be "DenseMmapArray" (or "DenseMemArray" on OSX), otherwise "SparseMemArray".
+        "geodistribution": "SparseMemArray",
         // C++ type used for geodistribution
         //"geodistribution_int": "uint16_t"
         "geodistribution_int": "uint32_t"
