@@ -4,7 +4,7 @@ using https://github.com/kcwu/taginfo
 ## If you are running taginfo with FreeBSD ezjail (what I'm using):
 ### Build
 All in one target, it does
- - create jail, init jail, install supervisord, install dependency,
+ - create jail, init jail, install runit, install dependency,
  - build code, update data
  - restart server
 ```sh
@@ -23,9 +23,9 @@ $ make update-jail JAIL_NAME=taginfo
 
 ## If you are using FreeBSD without jail (not well tested):
 ### Build
-(optional) install and configure supervisord
+(optional) install and configure runit
 ```sh
-$ sudo make init-supervisord
+$ sudo make init-runit
 ```
 install dependency packages
 ```sh
@@ -44,6 +44,6 @@ $ cp $OLD/build/taginfo-history.db $NEW/build/
 ### Daily update
 ```sh
 $ make update
-$ sudo make restart # optional, using supervisord
+$ sudo make restart # optional, using runit
 ```
 

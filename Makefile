@@ -18,7 +18,6 @@ LAST_DB = $(BUILD_DIR)/taginfo-history.db
 
 JAIL_ROOT=/usr/jails/$(JAIL_NAME)
 JAIL_TOP=$(JAIL_ROOT)$(TOP)
-SUPERVISORD_CONF = /usr/local/etc/supervisord.conf
 
 all:
 
@@ -45,12 +44,11 @@ init-jail:
 	sysrc syslogd_flags="-ss"
 	sysrc cron_enable=NO
 
-init-supervisord:
-	pkg install -y py27-supervisor
-	grep taginfo $(SUPERVISORD_CONF) || \
-	    (echo '[include]'; echo 'files = $(TOP)/taginfo.ini') >> $(SUPERVISORD_CONF)
-	grep supervisord_enable /etc/rc.conf || \
-	    (echo 'supervisord_enable="YES"' >> /etc/rc.conf && service supervisord start)
+init-runit:
+	pkg install -y runit
+	sysrc runsvdir_enable=YES
+	service runsvdir start
+	ln -s $(TOP)/runit-script /var/service/taginfo
 depend-freebsd:
 	pkg install -y wget gmake
 	# taginfo
@@ -63,7 +61,7 @@ all-jail:
 	[ `id -u` != 0 ]   # make sure we are not root
 	sudo make create-jail JAIL_NAME=$(JAIL_NAME) JAIL_IP=$(JAIL_IP) JAIL_USER=$(USER) JAIL_UID=`id -u`
 	git clone git@github.com:kcwu/taginfo-run.git $(JAIL_TOP)
-	sudo ezjail-admin console -e 'make -C $(TOP) init-jail init-supervisord depend-freebsd' $(JAIL_NAME)
+	sudo ezjail-admin console -e 'make -C $(TOP) init-jail init-runit depend-freebsd' $(JAIL_NAME)
 	cd $(JAIL_TOP) && make init
 	make update-jail JAIL_NAME=$(JAIL_NAME)
 
@@ -88,6 +86,6 @@ update: $(LAST_DB)
 	cp $(BUILD_DIR)/taginfo-*.db $(BUILD_DIR)/*/taginfo-*.db $(DATA_DIR)
 
 restart:
-	supervisorctl restart taginfo
+	/usr/local/sbin/sv restart taginfo
 
 .PHONY: download_extract $(EXTRACT_FILE)
