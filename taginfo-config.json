@@ -102,7 +102,7 @@
             // some locales. You may need newer sqlite3 or to recompile
             // sqlite3 to use those tokenizers.
             // See http://www.sqlite.org/fts3.html#tokenizer for detail.
-            "tokenizer": "icu"
+            "tokenizer": "simple"
         }
     },
     "logging": {
