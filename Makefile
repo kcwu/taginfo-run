@@ -54,7 +54,7 @@ depend-freebsd:
 	pkg install -y wget gmake
 	# taginfo
 	cd /usr/ports/databases/sqlite3 && make WITH=ICU BATCH=1 install clean
-	pkg install -y ruby google-sparsehash icu boost-libs pkgconf bash libgd \
+	pkg install -y ruby sparsehash icu boost-libs pkgconf bash libgd \
 	    rubygem-sqlite3 rubygem-sinatra-r18n rubygem-rack-contrib curl
 
 all-jail:
