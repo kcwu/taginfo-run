@@ -48,6 +48,7 @@ init-runit:
 	pkg install -y runit
 	sysrc runsvdir_enable=YES
 	service runsvdir start
+	-mkdir /var/log/taginfo
 	ln -s $(TOP)/runit-script /var/service/taginfo
 depend-freebsd:
 	pkg install -y wget gmake
