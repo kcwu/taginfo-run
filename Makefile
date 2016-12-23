@@ -25,7 +25,7 @@ all:
 create-jail:
 	[ -n "$(JAIL_USER)" ]
 	[ -n "$(JAIL_UID)" ]
-	[ -e /usr/jails ]  # make sure we are outside  jail
+	[ -e /usr/jails ]  # make sure we are outside jail
 	ezjail-admin create $(JAIL_NAME) 'lo1|$(JAIL_IP)'
 	[ -e "$(JAIL_ROOT)" ]
 	ezjail-admin start $(JAIL_NAME)
@@ -57,7 +57,7 @@ depend-freebsd:
 	    rubygem-sqlite3 rubygem-sinatra-r18n rubygem-rack-contrib curl
 
 all-jail:
-	[ -e /usr/jails ]  # make sure we are outside  jail
+	[ -e /usr/jails ]  # make sure we are outside jail
 	[ `id -u` != 0 ]   # make sure we are not root
 	sudo make create-jail JAIL_NAME=$(JAIL_NAME) JAIL_IP=$(JAIL_IP) JAIL_USER=$(USER) JAIL_UID=`id -u`
 	git clone git@github.com:kcwu/taginfo-run.git $(JAIL_TOP)
